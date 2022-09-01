@@ -1,61 +1,59 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello BlogController!{% endblock %}
+{% block title %}Articles
+{% endblock %}
 
 {% block body %}
+	<section class="articles">
+		<article>
+			<h2>Bienvenue sur ma page d'articles</h2>
+			<div class="metadata">Ecrit le 30/12/2019 à 14:44 dans la catégorie Paysage
+			</div>
+			<div class="content">
+				<img src="" alt="">
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam neque nisi
+										, accumsan id quam eget, pulvinar maximus libero. Donec eget sagittis nibh. Morbi auctor,
+										augue non dignissim mattis, arcu eros ornare tellus, semper condimentum mauris metus ac ma
+										ssa. Vestibulum a porta mi.
+				</p>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam neque nisi
+										, accumsan id quam eget, pulvinar maximus libero.</p>
+			</div>
+		</article>
+	</section>
+	{% for article in articles %}
+		{# la variables article est déclaré au moment du for, c'est une va
+				riable de reception, qui receptionne un article par tour de boucle, la variabl
+				es articles correspond à l'indice 'articles' du tableau ARRAY déclarée dans le
+				controller BlogController.php dans la méthode index() #}
 
-<section class="articles">
-<article>
-<h2>Titre de l'article</h2>
-<div class="metadata">Ecrit le 30/12/2019 à 14:44 dans la catégorie Politique<
-</div>
-<div class="content">
-<img src="" alt="">
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam neque nisi
-, accumsan id quam eget, pulvinar maximus libero. Donec eget sagittis nibh. Morbi auctor,
-augue non dignissim mattis, arcu eros ornare tellus, semper condimentum mauris metus ac ma
-ssa. Vestibulum a porta mi. </p>
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam neque nisi
-, accumsan id quam eget, pulvinar maximus libero.</p>
-<a href="{{path('blog_show')}}" class="btn btn-primary">Lire la suite</a>
-</div>
-</article>
-</section>
+		<article class="col-md-4 mx-auto text-center border border-
+								dark mb-3 p-3 mt-3 mr-1">
 
-<section class="articles">
-<article>
-<h2>Titre de l'article</h2>
-<div class="metadata">Ecrit le 30/12/2019 à 14:44 dans la catégorie Politique<
-</div>
-<div class="content">
-<img src="" alt="">
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam neque nisi
-, accumsan id quam eget, pulvinar maximus libero. Donec eget sagittis nibh. Morbi auctor,
-augue non dignissim mattis, arcu eros ornare tellus, semper condimentum mauris metus ac ma
-ssa. Vestibulum a porta mi. </p>
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam neque nisi
-, accumsan id quam eget, pulvinar maximus libero.</p>
-<a href="{{path('blog_show')}}" class="btn btn-primary">Lire la suite</a>
-</div>
-</article>
-</section>
+			<h2>{{ article.title }}</h2>
+			{# synthaxe TWIG, la variable $title est privée, donc symf
+						ony essaye d'abord d'y accéder et ensuite fait appel au getteur, c'est accessi
+						ble, il envoi !! #}
+			<div class="metadata">Ecrit le
+				{{ article.createdAt | date
+('d/m/Y') }}
+				à
+				{{ article.createdAt | date('H:i:s') }}
+				dans la catégorie Paysage</div><hr>
+			{# createdAt est un objet DateTime donc il n'est pas possible de l'afficher tel quel, nous devons utiliser un filtre TWIG, qui va convertir l'objet DateTime en une chaine de caractères #}
+			<div class="content">
+				<img src="{{ article.image }}" class="w-100" alt=""><hr>
 
-<section class="articles">
-<article>
-<h2>Titre de l'article</h2>
-<div class="metadata">Ecrit le 30/12/2019 à 14:44 dans la catégorie Politique<
-</div>
-<div class="content">
-<img src="" alt="">
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam neque nisi
-, accumsan id quam eget, pulvinar maximus libero. Donec eget sagittis nibh. Morbi auctor,
-augue non dignissim mattis, arcu eros ornare tellus, semper condimentum mauris metus ac ma
-ssa. Vestibulum a porta mi. </p>
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam neque nisi
-, accumsan id quam eget, pulvinar maximus libero.</p>
-<a href="{{path('blog_show')}}" class="btn btn-primary">Lire la suite</a>
-</div>
-</article>
-</section>
+				{{ article.content | raw }}
+
+				{# Sans le filtre, les balises <p> s'affichent, nous u
+								tilisons donc un filtre 'raw' pour l'affichage brut #}
+
+				<a href="{{ path('blog_show', {'id' : article.id }) }}" class="btn btn-
+										primary">Lire la suite</a>
+
+			</div>
+		</article>
+	{% endfor %}
 
 {% endblock %}
